@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import shap
 
 # === Load model, scaler, and feature names ===
 model = joblib.load("xgboost_model.pkl")
@@ -10,12 +11,12 @@ feature_names = joblib.load("feature_names.pkl")
 
 st.set_page_config(
     page_title="Mutation Pathogenicity Predictor",
-    layout="wide",  # ✅ this enables wide mode
+    layout="wide",  
     initial_sidebar_state="auto"
 )
 
-st.title("🧬 Mutation Pathogenicity Predictor")
-st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.")
+st.title("Mutation Pathogenicity Predictor")
+st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.\n")
 
 with st.form("mutation_form"):
     func_nonsyn = st.selectbox("func_nonsynonymous SNV", ["Yes", "No"])
@@ -58,10 +59,48 @@ if submit:
     full_input = {f: input_dict.get(f, 0.0) for f in feature_names}
     input_df = pd.DataFrame([full_input])
     X_scaled = pd.DataFrame(scaler.transform(input_df), columns=input_df.columns)
+
+    # Prediction
     prediction = model.predict(X_scaled)[0]
     proba = model.predict_proba(X_scaled)[0]
+    label = "Pathogenic" if prediction == 1 else "Benign"
 
-    label = "🧬 Pathogenic" if prediction == 1 else "✅ Benign"
     st.subheader(f"**Result: {label}**")
     st.caption(f"Confidence: {proba[prediction]*100:.1f}%")
     st.write(f"Probabilities → Benign: {proba[0]*100:.1f}%, Pathogenic: {proba[1]*100:.1f}%")
+
+    # SHAP Text-Based Explanation
+    st.markdown("---")
+    st.subheader("Top Feature Contributions")
+    st.caption("High Impact: |SHAP| > 0.1, Medium Impact: 0.05 < |SHAP| ≤ 0.1, Low Impact: |SHAP| ≤ 0.05")
+
+    # Calculate SHAP values
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X_scaled)
+    sample_shap = shap_values[0]
+
+    # Only keep SHAP values for features the user controlled
+    user_features = list(input_dict.keys())
+    impact_data = []
+
+    for feature in user_features:
+        shap_val = sample_shap[X_scaled.columns.get_loc(feature)]
+        raw_val = input_df.iloc[0][feature]  # unscaled user input
+        impact_data.append((feature, shap_val, raw_val))
+
+    # Sort by absolute SHAP value
+    impact_data.sort(key=lambda x: abs(x[1]), reverse=True)
+
+    # Display all 15
+    for i, (feature, shap_val, feature_val) in enumerate(impact_data, 1):
+        abs_val = abs(shap_val)
+        if abs_val > 0.1:
+            impact = "High"
+        elif abs_val > 0.05:
+            impact = "Medium"
+        else:
+            impact = "Low"
+
+        direction = "↑ Pathogenic" if shap_val > 0 else "↓ Benign"
+
+        st.write(f"{i}. {feature} = {feature_val:.9f} → SHAP: {shap_val:.9f} ({impact} impact, {direction})")
