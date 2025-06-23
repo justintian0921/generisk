@@ -72,7 +72,7 @@ if submit:
     # SHAP Text-Based Explanation
     st.markdown("---")
     st.subheader("Top Feature Contributions")
-    st.caption("High Impact: |SHAP| > 0.1, Medium Impact: 0.05 < |SHAP| ≤ 0.1, Low Impact: |SHAP| ≤ 0.05")
+    st.caption("High impact: |SHAP| > 0.1, Medium impact: 0.05 < |SHAP| ≤ 0.1, Low impact: |SHAP| ≤ 0.05")
 
     # Calculate SHAP values
     explainer = shap.TreeExplainer(model)
