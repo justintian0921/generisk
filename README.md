@@ -1,5 +1,5 @@
 # GeneRisk – Mutation Pathogenicity Predictor
----
+
 **GeneRisk** is an interactive machine learning app that predicts whether a genetic mutation is likely to be **Pathogenic** or **Benign**, using a pre-trained XGBoost model and 15 of the most impactful genomic features.
 
 Built with **Python**, **Streamlit**, and **SHAP**, this app provides:
