@@ -10,12 +10,12 @@ scaler = joblib.load("scaler.pkl")
 feature_names = joblib.load("feature_names.pkl")
 
 st.set_page_config(
-    page_title="Mutation Pathogenicity Predictor",
+    page_title="GeneRisk",
     layout="wide",  
     initial_sidebar_state="auto"
 )
 
-st.title("Mutation Pathogenicity Predictor")
+st.title("GeneRisk - Mutation Pathogenicity Predictor")
 st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.\n")
 
 with st.form("mutation_form"):
