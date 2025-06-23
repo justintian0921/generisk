@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 st.title("🧬 Mutation Pathogenicity Predictor")
-st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.\n")
+st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.")
 
 with st.form("mutation_form"):
     func_nonsyn = st.selectbox("func_nonsynonymous SNV", ["Yes", "No"])
