@@ -97,7 +97,7 @@ if submit:
 # === Expander for Feature Descriptions ===
 with st.expander("**What do these features mean?**"):
     st.markdown("""
-    | **Feature** | **Meaning (Simple)** |
+    | **Feature** | **Meaning** |
     |-------------|-----------------------|
     | `func_nonsynonymous SNV` | Mutation that changes an amino acid in a protein |
     | `phyloP100way_vertebrate` | Importance of this DNA spot across 100 species |
