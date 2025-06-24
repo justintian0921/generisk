@@ -95,7 +95,7 @@ if submit:
         st.write(f"{i}. {feature} = {feature_val:.9f} → SHAP: {shap_val:.9f} ({impact} impact, {direction})")
 
 # === Expander for Feature Descriptions ===
-with st.expander("📘 What do these features mean?"):
+with st.expander("**What do these features mean?**"):
     st.markdown("""
     | **Feature** | **Meaning (Simple)** |
     |-------------|-----------------------|
