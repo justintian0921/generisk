@@ -18,6 +18,7 @@ st.set_page_config(
 st.title("GeneRisk - Mutation Pathogenicity Predictor")
 st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.\n")
 
+# === Form for User Input ===
 with st.form("mutation_form"):
     func_nonsyn = st.selectbox("func_nonsynonymous SNV", ["Yes", "No"])
     phyloP = st.number_input("phyloP100way_vertebrate", step=0.000000001, format="%.9f")
@@ -36,6 +37,28 @@ with st.form("mutation_form"):
     blosum100 = st.number_input("blosum100", step=0.000000001, format="%.9f")
 
     submit = st.form_submit_button("Predict")
+
+# === Expander for Feature Descriptions ===
+with st.expander("**What do these features mean?**"):
+    st.markdown("""
+    | **Feature** | **Meaning** |
+    |-------------|-----------------------|
+    | `func_nonsynonymous SNV` | Mutation that changes an amino acid in a protein |
+    | `phyloP100way_vertebrate` | Importance of this DNA spot across 100 species |
+    | `AF_ami` | Frequency of the mutation in American Indian/Alaska Native people |
+    | `aromatic` | Whether the affected amino acid has a ring shape |
+    | `AF_male` | How often this mutation is found in males |
+    | `func_stopgain` | Mutation that stops protein early (likely harmful) |
+    | `omim_Autosomal_recessive` | Is this gene linked to a recessive disease? |
+    | `AF_eas` | Mutation frequency in East Asian populations |
+    | `omim_other` | Is this gene linked to any known genetic condition? |
+    | `AF_amr` | Mutation frequency in Latino populations |
+    | `phastCons100way_vertebrate` | Conservation score (100 species), high = important |
+    | `func_nonframeshift` | Changes some amino acids, but not the reading frame |
+    | `SiPhy_29way_logOdds` | Evolutionary importance score based on 29 species |
+    | `lof_score` | Likelihood that the gene stops working |
+    | `blosum100` | How acceptable the amino acid change is (evolution-wise) |
+    """, unsafe_allow_html=True)
 
 if submit:
     input_dict = {
@@ -93,25 +116,3 @@ if submit:
         impact = "High" if abs_val > 0.1 else "Medium" if abs_val > 0.05 else "Low"
         direction = "↑ Pathogenic" if shap_val > 0 else "↓ Benign"
         st.write(f"{i}. {feature} = {feature_val:.9f} → SHAP: {shap_val:.9f} ({impact} impact, {direction})")
-
-# === Expander for Feature Descriptions ===
-with st.expander("**What do these features mean?**"):
-    st.markdown("""
-    | **Feature** | **Meaning** |
-    |-------------|-----------------------|
-    | `func_nonsynonymous SNV` | Mutation that changes an amino acid in a protein |
-    | `phyloP100way_vertebrate` | Importance of this DNA spot across 100 species |
-    | `AF_ami` | Frequency of the mutation in American Indian/Alaska Native people |
-    | `aromatic` | Whether the affected amino acid has a ring shape |
-    | `AF_male` | How often this mutation is found in males |
-    | `func_stopgain` | Mutation that stops protein early (likely harmful) |
-    | `omim_Autosomal_recessive` | Is this gene linked to a recessive disease? |
-    | `AF_eas` | Mutation frequency in East Asian populations |
-    | `omim_other` | Is this gene linked to any known genetic condition? |
-    | `AF_amr` | Mutation frequency in Latino populations |
-    | `phastCons100way_vertebrate` | Conservation score (100 species), high = important |
-    | `func_nonframeshift` | Changes some amino acids, but not the reading frame |
-    | `SiPhy_29way_logOdds` | Evolutionary importance score based on 29 species |
-    | `lof_score` | Likelihood that the gene stops working |
-    | `blosum100` | How acceptable the amino acid change is (evolution-wise) |
-    """, unsafe_allow_html=True)
