@@ -16,10 +16,10 @@ st.set_page_config(
 )
 
 st.title("GeneRisk - Mutation Pathogenicity Predictor")
-st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result. See **explanations** for the features at the very bottom.\n")
+st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result. **Explanations** for each feature are listed below.\n")
 
 # === Expander for Feature Descriptions ===
-with st.expander("**What do these features mean?**"):
+with st.expander("**What do these features mean?"):
     st.markdown("""
     | **Feature** | **Meaning** |
     |-------------|-----------------------|
