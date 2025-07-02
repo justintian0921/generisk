@@ -16,27 +16,7 @@ st.set_page_config(
 )
 
 st.title("GeneRisk - Mutation Pathogenicity Predictor")
-st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result.\n")
-
-# === Form for User Input ===
-with st.form("mutation_form"):
-    func_nonsyn = st.selectbox("func_nonsynonymous SNV", ["Yes", "No"])
-    phyloP = st.number_input("phyloP100way_vertebrate", step=0.000000001, format="%.9f")
-    af_ami = st.number_input("AF_ami", step=0.000000001, format="%.9f")
-    aromatic = st.number_input("aromatic", step=0.000000001, format="%.9f")
-    af_male = st.number_input("AF_male", step=0.000000001, format="%.9f")
-    func_stopgain = st.selectbox("func_stopgain", ["Yes", "No"])
-    omim_ar = st.number_input("omim_Autosomal_recessive", step=0.000000001, format="%.9f")
-    af_eas = st.number_input("AF_eas", step=0.000000001, format="%.9f")
-    omim_other = st.number_input("omim_other", step=0.000000001, format="%.9f")
-    af_amr = st.number_input("AF_amr", step=0.000000001, format="%.9f")
-    phastCons = st.number_input("phastCons100way_vertebrate", step=0.000000001, format="%.9f")
-    func_nonframeshift = st.selectbox("func_nonframeshift", ["Yes", "No"])
-    siphy = st.number_input("SiPhy_29way_logOdds", step=0.000000001, format="%.9f")
-    lof_score = st.number_input("lof_score", step=0.000000001, format="%.9f")
-    blosum100 = st.number_input("blosum100", step=0.000000001, format="%.9f")
-
-    submit = st.form_submit_button("Predict")
+st.markdown("Enter values for the **top 15 most important features**. Click **Predict** to see the result. See **explanations** for the features at the very bottom.\n")
 
 # === Expander for Feature Descriptions ===
 with st.expander("**What do these features mean?**"):
@@ -59,6 +39,26 @@ with st.expander("**What do these features mean?**"):
     | `lof_score` | Likelihood that the gene stops working |
     | `blosum100` | How acceptable the amino acid change is (evolution-wise) |
     """, unsafe_allow_html=True)
+
+# === Form for User Input ===
+with st.form("mutation_form"):
+    func_nonsyn = st.selectbox("func_nonsynonymous SNV", ["Yes", "No"])
+    phyloP = st.number_input("phyloP100way_vertebrate", step=0.000000001, format="%.9f")
+    af_ami = st.number_input("AF_ami", step=0.000000001, format="%.9f")
+    aromatic = st.number_input("aromatic", step=0.000000001, format="%.9f")
+    af_male = st.number_input("AF_male", step=0.000000001, format="%.9f")
+    func_stopgain = st.selectbox("func_stopgain", ["Yes", "No"])
+    omim_ar = st.number_input("omim_Autosomal_recessive", step=0.000000001, format="%.9f")
+    af_eas = st.number_input("AF_eas", step=0.000000001, format="%.9f")
+    omim_other = st.number_input("omim_other", step=0.000000001, format="%.9f")
+    af_amr = st.number_input("AF_amr", step=0.000000001, format="%.9f")
+    phastCons = st.number_input("phastCons100way_vertebrate", step=0.000000001, format="%.9f")
+    func_nonframeshift = st.selectbox("func_nonframeshift", ["Yes", "No"])
+    siphy = st.number_input("SiPhy_29way_logOdds", step=0.000000001, format="%.9f")
+    lof_score = st.number_input("lof_score", step=0.000000001, format="%.9f")
+    blosum100 = st.number_input("blosum100", step=0.000000001, format="%.9f")
+
+    submit = st.form_submit_button("Predict")
 
 if submit:
     input_dict = {
